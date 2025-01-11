@@ -42,6 +42,27 @@
       }
     },
     {
+      "label": "pnpm:lint",
+      "type": "npm",
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "new",
+        "clear": true,
+        "close": true
+      },
+      "script": "lint",
+      "isBackground": false,
+      "hide": true,
+      "detail": "Lint the package",
+      "dependsOn": "pnpm:install",
+      "runOptions": {
+        "runOn": "folderOpen",
+        "instanceLimit": 1
+      }
+    },
+    {
       "label": "pnpm:test",
       "type": "npm",
       "presentation": {
@@ -57,7 +78,7 @@
       "script": "test",
       "isBackground": false,
       "detail": "Test the package",
-      "dependsOn": "pnpm:install",
+      "dependsOn": "pnpm:lint",
       "runOptions": {
         "runOn": "folderOpen",
         "instanceLimit": 1

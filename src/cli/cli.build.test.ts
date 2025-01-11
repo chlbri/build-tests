@@ -1,19 +1,34 @@
 import { runSafely } from 'cmd-ts';
 import isInCi from 'is-in-ci';
 import sh from 'shelljs';
+import { FIXTURES } from '../constants';
 import { BIN, cli } from './cli';
 
-const hasExtension = process.env.VITEST_VSCODE === 'true';
+// #region Preparation
+const hasExtension = process.env[FIXTURES.vitest] === FIXTURES.true;
+const recursive = process.env[FIXTURES.recursive] === FIXTURES.true;
 
-const check = isInCi || hasExtension;
+const check = isInCi || hasExtension || recursive;
 
-const desc = describe.skipIf(check);
-
-desc('From TARBALL', ({ sequential: test }) => {
+const useHook = () => {
   beforeEach(() => {
     sh.exec('pnpm run build');
+    process.env[FIXTURES.recursive] = FIXTURES.true;
     return runSafely(cli, ['pretest']);
   });
+
+  afterEach(() => {
+    process.env[FIXTURES.recursive] = FIXTURES.false;
+  });
+
+  afterAll(() => {
+    delete process.env[FIXTURES.recursive];
+  });
+};
+// #endregion
+
+describe.skipIf(check)('#2 => Tests From TARBALL', () => {
+  useHook();
 
   const makeTest =
     (...params: string[]) =>
