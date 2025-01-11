@@ -1,29 +1,13 @@
-import { boolean, command, flag } from 'cmd-ts';
-import sh from 'shelljs';
-import { addTarball } from '../addTarball';
-import { TEARDOWN_COMMAND } from '../constants';
+import { subcommands } from 'cmd-ts';
+import { posttest } from './post';
+import { pretest } from './pre';
+import { test } from './test';
 
-export const cli = command({
-  name: 'build-tests',
+export const BIN = 'build-tests';
 
-  args: {
-    pre: flag({
-      description: 'The hook pretest',
-      short: 'pre',
-      type: boolean,
-      long: 'pretest',
-    }),
-
-    post: flag({
-      description: 'The hook posttest',
-      short: 'post',
-      type: boolean,
-      long: 'posttest',
-    }),
-  },
-
-  handler: async ({ pre, post }) => {
-    if (pre) await addTarball();
-    if (post) sh.exec(TEARDOWN_COMMAND);
-  },
+export const cli = subcommands({
+  name: BIN,
+  cmds: { posttest, pretest, test },
+  description: 'Use it to build your package and testing the results',
+  version: '0.1.0',
 });

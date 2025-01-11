@@ -45,7 +45,9 @@
   },
   "scripts": {
     "build": "pnpm rm:lib && pnpm run rollup",
-    "ci": "pnpm run config:off && pnpm run lint && pnpm run test && pnpm run prettier",
+    "ci": "pnpm run ci:base && pnpm run prettier",
+    "ci:admin": "pnpm run ci:base && pnpm run test:tarball && pnpm run prettier",
+    "ci:base": "pnpm run config:off && pnpm run lint && pnpm run test",
     "clean": "pnpm run remove && pnpm run config",
     "config": "pnpm install",
     "config:off": "pnpm run config --offline",
@@ -64,6 +66,7 @@
     "rollup": "rollup -c",
     "test": "pnpm run test:coverage --no-coverage",
     "test:coverage": "vitest run",
+    "test:tarball": "vitest run -c vitest.config.build.ts",
     "upgrade": "pnpm upgrade --latest"
   },
   "devDependencies": {

@@ -14,7 +14,7 @@ import {
   TARBALL_FOLDER,
   TS_PATH,
 } from '../constants';
-import { cli } from './cli';
+import { BIN, cli } from './cli';
 
 const folderTocreate = `${DOT}${TARBALL_FOLDER}`;
 
@@ -22,15 +22,20 @@ const useFunc = () => {
   sh.rm('-Rf', [folderTocreate]);
 };
 
-describe.skipIf(isInCi)('#1 => CLI - ts', () => {
-  beforeAll(useFunc);
+const first = () =>
+  test(`#0 => Delete the ${TARBALL_FOLDER} folder`, useFunc);
+
+const desc = describe.skipIf(isInCi);
+
+desc('#1 => CLI - ts', () => {
+  first();
 
   test('#1 => The pack is not defined', () => {
     const actual = existsSync(folderTocreate);
     expect(actual).toBe(false);
   });
 
-  test('#2 => Run th cli', () => runSafely(cli, ['--pretest']));
+  test('#2 => Run th cli', () => runSafely(cli, ['pre']));
 
   test('#3 => The pack is  defined', () => {
     const actual = existsSync(folderTocreate);
@@ -66,14 +71,14 @@ describe.skipIf(isInCi)('#1 => CLI - ts', () => {
     expect(actual).toBe(false);
   });
 
-  afterAll(() => {
+  test('#7 => Final refinements', () => {
     useFunc();
-    return runSafely(cli, ['--posttest']);
+    return runSafely(cli, ['post']);
   });
 });
 
-describe.skipIf(isInCi)('#2 => CLI - ts - cov', () => {
-  beforeAll(useFunc);
+desc('#2 => CLI - ts - cov', () => {
+  first();
 
   let tsConfig = t.anify<editJsonFile.JsonEditor>();
   let outDir0 = t.string;
@@ -92,7 +97,7 @@ describe.skipIf(isInCi)('#2 => CLI - ts - cov', () => {
     expect(actual).toBe(false);
   });
 
-  test('#2 => Run th cli', () => runSafely(cli, ['--pretest']));
+  test('#2 => Run th cli', () => runSafely(cli, ['pretest']));
 
   test('#3 => The pack is  defined', () => {
     const actual = existsSync(folderTocreate);
@@ -133,14 +138,14 @@ describe.skipIf(isInCi)('#2 => CLI - ts - cov', () => {
     tsConfig.save();
   });
 
-  afterAll(() => {
+  test('#7 => Final refinements', () => {
     useFunc();
-    return runSafely(cli, ['--posttest']);
+    return runSafely(cli, ['posttest']);
   });
 });
 
-describe.skipIf(isInCi)('#3 => The CLI builded', () => {
-  beforeAll(useFunc);
+desc('#3 => The CLI prebuilt', () => {
+  first();
 
   test('#1 => The pack is not defined', () => {
     const actual = existsSync(folderTocreate);
@@ -150,7 +155,7 @@ describe.skipIf(isInCi)('#3 => The CLI builded', () => {
   test('#2 => Run th cli', () => {
     const file = editJsonFile(PACKAGE_PATH);
     const bin = file.get(`${BIN_KEY}.${cli.name}`);
-    sh.exec(`node ${DOT}${bin} --pretest`);
+    sh.exec(`node ${DOT}${bin} pre:test`);
   });
 
   test('#3 => The pack is  defined', () => {
@@ -187,10 +192,64 @@ describe.skipIf(isInCi)('#3 => The CLI builded', () => {
     expect(actual).toBe(false);
   });
 
-  afterAll(() => {
+  test('#7 => Final refinements', () => {
     useFunc();
     const file = editJsonFile(PACKAGE_PATH);
     const bin = file.get(`${BIN_KEY}.${cli.name}`);
-    return sh.exec(`node ${DOT}${bin} --posttest`);
+    return sh.exec(`node ${DOT}${bin} post:test`);
+  });
+});
+
+desc('#3 => The CLI built', () => {
+  first();
+
+  test('#1 => The pack is not defined', () => {
+    const actual = existsSync(folderTocreate);
+    expect(actual).toBe(false);
+  });
+
+  test('#2 => Run th cli', () => {
+    const file = editJsonFile(PACKAGE_PATH);
+    const bin = file.get(`${BIN_KEY}.${cli.name}`);
+    sh.exec(`node ${DOT}${bin} pre-test`);
+  });
+
+  test('#3 => The pack is  defined', () => {
+    const actual = existsSync(folderTocreate);
+    expect(actual).toBe(true);
+  });
+
+  describe('#4 the pack folder has the tarball', () => {
+    let file = t.string;
+
+    beforeAll(() => {
+      file = readdirSync(folderTocreate)[0];
+    });
+
+    test("#1 => It's really a tarbal", () => {
+      expect(extname(file)).toBe(TARBALL_EXTENSION);
+    });
+
+    test("#2 => It's realated to the current project", () => {
+      const file2 = editJsonFile(PACKAGE_PATH);
+      const name = t
+        .anify<string>(file2.get('name'))
+        .replace('@', '')
+        .replace('/', '-');
+
+      expect(file.startsWith(name)).toBe(true);
+    });
+  });
+
+  test('#5 => Remove folder', useFunc);
+
+  test('#6 => The pack is not defined', () => {
+    const actual = existsSync(folderTocreate);
+    expect(actual).toBe(false);
+  });
+
+  test('#7 => Final refinements', () => {
+    useFunc();
+    return sh.exec(`pnpm ${BIN} post-test`);
   });
 });
