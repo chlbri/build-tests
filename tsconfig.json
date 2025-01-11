@@ -1,7 +1,12 @@
 {
-  "include": ["src/**/*"],
+  "include": [
+    "src/**/*"
+  ],
   "compilerOptions": {
-    "lib": ["dom", "esnext"],
+    "lib": [
+      "dom",
+      "esnext"
+    ],
     "importHelpers": true,
     "target": "ESNext",
     "declaration": true,
@@ -15,7 +20,9 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "moduleResolution": "Bundler",
-    "types": ["vitest/globals"],
+    "types": [
+      "vitest/globals"
+    ],
     "jsx": "react",
     "esModuleInterop": true,
     "skipLibCheck": true,

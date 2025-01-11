@@ -49,7 +49,7 @@
     "ci": "pnpm run config:off && pnpm run lint && pnpm run test && pnpm run prettier",
     "rollup": "rollup -c",
     "build": "pnpm rm:lib && pnpm run rollup",
-    "p-q": "pretty-quick --staged",
+    "p-q": "pretty-quick",
     "rm": "rm -rf node_modules pnpm-lock.yaml",
     "rinit": "pnpm run rm && pnpm run config",
     "rinit:off": "pnpm run rm && pnpm run config:off",
