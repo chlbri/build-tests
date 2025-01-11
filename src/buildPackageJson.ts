@@ -22,39 +22,47 @@ export const buildPackageJson: BuldPackageJson_F = () => {
   // #region Set export values
   EXPORT_KEYS.forEach(key => {
     const value = file.get(key);
-    const transformed = replaceLib(value);
-    file.set(key, transformed);
+    if (value) {
+      const transformed = replaceLib(value);
+      file.set(key, transformed);
+    }
   });
   // #endregion
 
   // #region Set Export key
-  const _valueExports = file.get(EXPORT_KEY);
+  const valueExports = file.get(EXPORT_KEY);
 
-  const valueExports = Object.entries(_valueExports).reduce(
-    (acc, [key, value]) => {
-      const entries = Object.entries(value as any);
-      const _value = entries.reduce((acc, [key, value]) => {
-        acc[key] = replaceLib(value as any);
+  if (valueExports) {
+    const transformedExports = Object.entries(valueExports).reduce(
+      (acc, [key, value]) => {
+        const entries = Object.entries(value as any);
+        const _value = entries.reduce((acc, [key, value]) => {
+          acc[key] = replaceLib(value as any);
+          return acc;
+        }, {} as any);
+        acc[key] = key.includes('package.json') ? value : _value;
         return acc;
-      }, {} as any);
-      acc[key] = key.includes('package.json') ? value : _value;
-      return acc;
-    },
-    {} as any,
-  );
+      },
+      {} as any,
+    );
 
-  file.set(EXPORT_KEY, valueExports);
-
+    file.set(EXPORT_KEY, transformedExports);
+  }
   // #endregion
 
+  // #region Set bin
   const bin1 = t.buildObject<Record<string, string>>(file.get(BIN_KEY));
-  const bin2 = Object.entries(bin1).reduce((acc, [key, value]) => {
-    acc[key] = replaceLib(value);
-    return acc;
-  }, {} as any);
-  const bin3 = sortKeys(bin2);
 
-  file.set(BIN_KEY, bin3);
+  if (bin1) {
+    const bin2 = Object.entries(bin1).reduce((acc, [key, value]) => {
+      acc[key] = replaceLib(value);
+      return acc;
+    }, {} as any);
+    const bin3 = sortKeys(bin2);
+
+    file.set(BIN_KEY, bin3);
+  }
+  // #endregion
 
   // #region Unset some props
   file.unset('files');
