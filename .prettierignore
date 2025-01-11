@@ -2,3 +2,5 @@
 node_modules
 publish
 publish_npm
+pnpm-lock.yaml
+ts-config.json

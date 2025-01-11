@@ -23,6 +23,7 @@ export default [
       '**/lib',
       '**/publish_npm',
       '**/*.typegen.ts',
+      'pnpm-lock.yaml',
     ],
   },
   ...compat.extends(
