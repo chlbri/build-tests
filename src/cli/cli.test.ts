@@ -1,6 +1,7 @@
 import { t } from '@bemedev/types';
 import { runSafely } from 'cmd-ts';
 import editJsonFile from 'edit-json-file';
+import isInCi from 'is-in-ci';
 import { existsSync, readdirSync } from 'node:fs';
 import { extname } from 'node:path';
 import sh from 'shelljs';
@@ -21,9 +22,7 @@ const useFunc = () => {
   sh.rm('-Rf', [folderTocreate]);
 };
 
-const notInCI = process.env.environment !== 'CI';
-
-describe.runIf(notInCI)('#1 => CLI - ts', () => {
+describe.skipIf(isInCi)('#1 => CLI - ts', () => {
   beforeAll(useFunc);
 
   test('#1 => The pack is not defined', () => {
@@ -73,7 +72,7 @@ describe.runIf(notInCI)('#1 => CLI - ts', () => {
   });
 });
 
-describe.runIf(notInCI)('#2 => CLI - ts - cov', () => {
+describe.skipIf(isInCi)('#2 => CLI - ts - cov', () => {
   beforeAll(useFunc);
 
   let tsConfig = t.anify<editJsonFile.JsonEditor>();
@@ -140,7 +139,7 @@ describe.runIf(notInCI)('#2 => CLI - ts - cov', () => {
   });
 });
 
-describe.runIf(notInCI)('#3 => The CLI builded', () => {
+describe.skipIf(isInCi)('#3 => The CLI builded', () => {
   beforeAll(useFunc);
 
   test('#1 => The pack is not defined', () => {
