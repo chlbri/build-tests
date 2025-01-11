@@ -8,11 +8,10 @@ export default defineConfig({
     aliasTs(tsconfig as any),
     exclude({
       ignoreCoverageFiles: ['**/index.ts'],
-      // ignoreTestFiles: ['src/cli/cli.build.test.ts'],
+      ignoreTestFiles: ['**/*.import.test.ts'],
     }),
   ],
   test: {
-    bail: 10,
     fileParallelism: false,
     slowTestThreshold: 5000,
     globals: true,

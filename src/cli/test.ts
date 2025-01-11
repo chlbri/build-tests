@@ -1,7 +1,7 @@
 import { command, flag } from 'cmd-ts';
 import sh from 'shelljs';
 import { addTarball } from '../addTarball';
-import { TEARDOWN_COMMAND } from '../constants';
+import { cleanup } from '../cleanup';
 import { isDefined } from '../isDefined';
 
 export const test = command({
@@ -30,6 +30,6 @@ export const test = command({
     if (isDefined(stderr) && stderr.trim() !== '') console.warn(stderr);
     // #endregion
 
-    if (post) sh.exec(TEARDOWN_COMMAND);
+    if (post) cleanup();
   },
 });

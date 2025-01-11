@@ -24,8 +24,6 @@ export const pack: Pack_F = async () => {
     .exec(`pnpm pack --pack-destination ../${TARBALL_FOLDER}`)
     .toWellFormed();
 
-  console.log(out1);
-
   sh.cd('..');
 
   const out2 = getRelativePath0(out1);

@@ -1,6 +1,10 @@
 import type { Fn } from '@bemedev/types';
-import { buildPackageJson } from './buildPackageJson';
-import { EXPORT_KEYS } from './constants';
+
+// @ts-expect-error For test build
+import { buildPackageJson } from 'this-gen-1/buildPackageJson';
+
+// @ts-expect-error For test build
+import { EXPORT_KEYS } from 'this-gen-1/constants';
 
 describe('Build new package.json for npm pack', () => {
   const { packageJson } = buildPackageJson();

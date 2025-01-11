@@ -1,7 +1,7 @@
 import { t, type Fn } from '@bemedev/types';
 import editJsonFile from 'edit-json-file';
 import sortKeys from 'sort-keys';
-import { BIN_KEY, EXPORT_KEYS } from './constants';
+import { BIN_KEY, EXPORT_KEY, EXPORT_KEYS } from './constants';
 import { getTypescriptOutdir } from './getTypescriptOutdir';
 
 type BuldPackageJson_F = Fn<
@@ -25,6 +25,26 @@ export const buildPackageJson: BuldPackageJson_F = () => {
     const transformed = replaceLib(value);
     file.set(key, transformed);
   });
+  // #endregion
+
+  // #region Set Export key
+  const _valueExports = file.get(EXPORT_KEY);
+
+  const valueExports = Object.entries(_valueExports).reduce(
+    (acc, [key, value]) => {
+      const entries = Object.entries(value as any);
+      const _value = entries.reduce((acc, [key, value]) => {
+        acc[key] = replaceLib(value as any);
+        return acc;
+      }, {} as any);
+      acc[key] = key.includes('package.json') ? value : _value;
+      return acc;
+    },
+    {} as any,
+  );
+
+  file.set(EXPORT_KEY, valueExports);
+
   // #endregion
 
   const bin1 = t.buildObject<Record<string, string>>(file.get(BIN_KEY));
