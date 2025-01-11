@@ -54,6 +54,7 @@
     "rinit": "pnpm run rm && pnpm run config",
     "rinit:off": "pnpm run rm && pnpm run config:off",
     "pretest": "pnpm run build",
+    "posttest": "pnpm run p-q",
     "test": "pnpm run test:coverage --no-coverage",
     "test:coverage": "vitest run",
     "test:watch": "vitest",
