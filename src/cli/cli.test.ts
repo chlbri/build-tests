@@ -1,4 +1,4 @@
-import { t } from '@bemedev/types';
+import { castings, typings } from '@bemedev/types';
 import { runSafely } from 'cmd-ts';
 import editJsonFile from 'edit-json-file';
 import isInCi from 'is-in-ci';
@@ -43,7 +43,7 @@ desc('#1 => CLI - ts', () => {
   });
 
   describe('#4 the pack folder has the tarball', () => {
-    let file = t.string;
+    let file = typings.strings.type;
 
     beforeEach(() => {
       file = readdirSync(folderTocreate)[0];
@@ -55,8 +55,8 @@ desc('#1 => CLI - ts', () => {
 
     test("#2 => It's realated to the current project", () => {
       const file2 = editJsonFile(PACKAGE_PATH);
-      const name = t
-        .anify<string>(file2.get('name'))
+      const name = castings
+        .strings(file2.get('name'))
         .replace('@', '')
         .replace('/', '-');
 
@@ -80,8 +80,8 @@ desc('#1 => CLI - ts', () => {
 desc('#2 => CLI - ts - cov', () => {
   first();
 
-  let tsConfig = t.anify<editJsonFile.JsonEditor>();
-  let outDir0 = t.string;
+  let tsConfig = typings.commons.unknown<editJsonFile.JsonEditor>();
+  let outDir0 = typings.strings.type;
 
   test('#0 => To cover, change something in tsconfig', () => {
     tsConfig = editJsonFile(TS_PATH);
@@ -105,7 +105,7 @@ desc('#2 => CLI - ts - cov', () => {
   });
 
   describe('#4 the pack folder has the tarball', () => {
-    let file = t.string;
+    let file = typings.strings.type;
 
     beforeEach(() => {
       file = readdirSync(folderTocreate)[0];
@@ -117,8 +117,8 @@ desc('#2 => CLI - ts - cov', () => {
 
     test("#2 => It's realated to the current project", () => {
       const file2 = editJsonFile(PACKAGE_PATH);
-      const name = t
-        .anify<string>(file2.get('name'))
+      const name = castings
+        .strings(file2.get('name'))
         .replace('@', '')
         .replace('/', '-');
 
@@ -164,7 +164,7 @@ desc('#3 => The CLI prebuilt', () => {
   });
 
   describe('#4 the pack folder has the tarball', () => {
-    let file = t.string;
+    let file = typings.strings.type;
 
     beforeAll(() => {
       file = readdirSync(folderTocreate)[0];
@@ -176,8 +176,8 @@ desc('#3 => The CLI prebuilt', () => {
 
     test("#2 => It's realated to the current project", () => {
       const file2 = editJsonFile(PACKAGE_PATH);
-      const name = t
-        .anify<string>(file2.get('name'))
+      const name = castings
+        .strings(file2.get('name'))
         .replace('@', '')
         .replace('/', '-');
 
@@ -220,7 +220,7 @@ desc('#3 => The CLI built', () => {
   });
 
   describe('#4 the pack folder has the tarball', () => {
-    let file = t.string;
+    let file = typings.strings.type;
 
     beforeAll(() => {
       file = readdirSync(folderTocreate)[0];
@@ -232,8 +232,8 @@ desc('#3 => The CLI built', () => {
 
     test("#2 => It's realated to the current project", () => {
       const file2 = editJsonFile(PACKAGE_PATH);
-      const name = t
-        .anify<string>(file2.get('name'))
+      const name = castings
+        .strings(file2.get('name'))
         .replace('@', '')
         .replace('/', '-');
 

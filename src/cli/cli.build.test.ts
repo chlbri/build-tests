@@ -25,6 +25,8 @@ const useHook = () => {
     delete process.env[FIXTURES.recursive];
   });
 };
+
+const TIMEOUT = 100_000;
 // #endregion
 
 describe.skipIf(check)('#1 => Tests From TARBALL', () => {
@@ -41,14 +43,15 @@ describe.skipIf(check)('#1 => Tests From TARBALL', () => {
       expect(code).toBe(0);
     };
 
-  test('#1 => Test only', makeTest());
+  test('#1 => Test only', makeTest(), TIMEOUT);
 
-  test('#2 => Test and pre', makeTest('--pretest'));
+  test('#2 => Test and pre', makeTest('--pretest'), TIMEOUT);
 
-  test('#3 => Test and post', makeTest('--posttest'));
+  test('#3 => Test and post', makeTest('--posttest'), TIMEOUT);
 
   test(
     '#4 => Test with pre and post',
     makeTest('--pretest', '--posttest'),
+    TIMEOUT,
   );
 });

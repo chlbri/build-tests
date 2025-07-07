@@ -1,3 +1,5 @@
-import { Undefiny } from '@bemedev/types';
+import type { types } from '@bemedev/types';
 
-export const isDefined = <T>(value?: Undefiny<T>): value is T => !!value;
+export const isDefined = <T>(
+  value?: types.Undefiny<T>,
+): value is NonNullable<T> => !!value;

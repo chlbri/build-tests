@@ -1,4 +1,4 @@
-import type { Fn } from '@bemedev/types';
+import type { types } from '@bemedev/types';
 import { buildPackageJson } from './buildPackageJson';
 import { EXPORT_KEYS } from './constants';
 
@@ -14,9 +14,9 @@ describe('Build new package.json for npm pack', () => {
     });
   };
 
-  type Mapper = Fn<
+  type Mapper = types.Fn<
     [check: boolean],
-    Fn<[key: string, index: number], void>
+    types.Fn<[key: string, index: number], void>
   >;
 
   const mapper: Mapper = check => (key, index) => {

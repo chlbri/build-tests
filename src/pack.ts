@@ -1,4 +1,4 @@
-import type { Fn } from '@bemedev/types';
+import type { types } from '@bemedev/types';
 import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import sh from 'shelljs';
@@ -6,7 +6,7 @@ import { buildPackageJson } from './buildPackageJson';
 import { DOT, PACKAGE_PATH, TARBALL_FOLDER } from './constants';
 import { getRelativePath0 } from './getRelativePath';
 
-type Pack_F = Fn<[], Promise<string>>;
+type Pack_F = types.Fn<[], Promise<string>>;
 
 export const pack: Pack_F = async () => {
   const { packageJson, outDir } = buildPackageJson();

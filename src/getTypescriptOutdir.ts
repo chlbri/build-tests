@@ -1,8 +1,8 @@
-import type { Fn } from '@bemedev/types';
+import type { types } from '@bemedev/types';
 import editJsonFile from 'edit-json-file';
 import { DOT, PATH_OUT_DIR, TS_PATH } from './constants';
 
-type Fn1 = Fn<[], string>;
+type Fn1 = types.Fn<[], string>;
 
 export const getTypescriptOutdir: Fn1 = () => {
   const file = editJsonFile(TS_PATH);
