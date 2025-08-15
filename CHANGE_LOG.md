@@ -1,5 +1,19 @@
 # Changelog
 
+<details>
+<summary>
+
+## **[0.1.2] - 2025/08/15** => _11:50_
+
+</summary>
+
+- Add new flags
+- <u>Test coverage **_100%_**</u> 👌🏾😉,
+
+</details>
+
+<br/>
+
 ## [0.1.0]
 
 ### Fixes
