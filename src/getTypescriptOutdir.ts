@@ -8,6 +8,8 @@ export const getTypescriptOutdir: Fn1 = () => {
   const file = editJsonFile(TS_PATH);
 
   const outDir1 = file.get(PATH_OUT_DIR) as string;
+  // Ignores coverage because difficult to test 👌🏾😉😎
+  /* v8 ignore next 3 */
   const outDir2 = outDir1.startsWith(DOT)
     ? outDir1.replace(DOT, '')
     : outDir1;

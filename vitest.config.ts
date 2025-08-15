@@ -15,6 +15,7 @@ export default defineConfig({
     fileParallelism: false,
     slowTestThreshold: 5000,
     globals: true,
+    // pool: 'typescript',
     logHeapUsage: true,
     coverage: {
       enabled: true,

@@ -21,7 +21,7 @@ export const TARBALL_EXTENSION = '.tgz';
 
 export const TEARDOWN_COMMAND = `pnpm remove ${this1}`;
 
-export const FIXTURES = castings.commons.readonly({
+export const FIXTURES = castings.commons.const({
   true: 'true',
   false: 'false',
   recursive: 'TEST_RECURSIVE',

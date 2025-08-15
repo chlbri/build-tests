@@ -1,35 +1,47 @@
+import { castings } from '@bemedev/types';
 import { command, flag } from 'cmd-ts';
 import sh from 'shelljs';
 import { addTarball } from '../addTarball';
 import { cleanup } from '../cleanup';
-import { isDefined } from '../isDefined';
 
 export const test = command({
   name: 'test',
 
   args: {
+    pretest: flag({
+      description: 'The hook pretest',
+      short: 'b',
+      long: 'pretest',
+    }),
+
+    posttest: flag({
+      description: 'The hook posttest',
+      short: 'a',
+      long: 'posttest',
+    }),
+
     pre: flag({
       description: 'The hook pretest',
-      short: 'pre',
-      // type: boolean,
-      long: 'pretest',
+      long: 'pre',
     }),
 
     post: flag({
       description: 'The hook posttest',
-      short: 'post',
-      long: 'posttest',
+      long: 'post',
     }),
   },
 
-  handler: async ({ pre, post }) => {
-    if (pre) await addTarball();
+  // Ignores coverage because of recursivity
+  /* v8 ignore next 11 */
+  handler: async ({ pretest, posttest, pre, post }) => {
+    if (pretest || pre) await addTarball();
 
     // #region Test
     const { stderr } = sh.exec('pnpm run test');
-    if (isDefined(stderr) && stderr.trim() !== '') console.warn(stderr);
+    if (castings.commons.isDefined(stderr) && stderr.trim() !== '')
+      console.warn(stderr);
     // #endregion
 
-    if (post) cleanup();
+    if (posttest || post) cleanup();
   },
 });
